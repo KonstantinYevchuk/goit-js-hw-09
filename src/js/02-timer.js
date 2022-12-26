@@ -1,13 +1,7 @@
 const flatpickr = require("flatpickr");
 import flatpickr from "flatpickr";
 import "flatpickr/dist/themes/dark.css";
-
-const bodyEl = document.querySelector("body");
-bodyEl.style.fontSize = "24px";
-const timerEl = document.querySelector(".timer");
-console.log(timerEl.children)
-timerEl.style.display = "flex";
-const fieldEl = document.querySelectorAll(".field");
+import Notiflix from 'notiflix';
 
 
 const buttonEl = document.querySelector("button[data-start]");
@@ -28,7 +22,8 @@ defaultDate: new Date(),
 minuteIncrement: 1,
 onClose(selectedDates) {
     if(selectedDates[0] < new Date()) {
-        alert("Please choose a date in the future")
+        // alert("Please choose a date in the future");
+        Notiflix.Notify.failure('Please choose a date in the future');
         return
     } 
     buttonEl.removeAttribute("disabled")
@@ -67,3 +62,28 @@ function convertMs(ms) {
   function addLeadingZero(value) {
     return String(value).padStart(2, '0');
   }
+
+
+const bodyEl = document.querySelector("body");
+bodyEl.style.fontFamily = "sans-serif";
+
+const timerEl = document.querySelector(".timer");
+timerEl.style.display = "flex";
+
+const fieldEl = document.querySelectorAll(".field");
+fieldEl.forEach(item => {
+    item.style.display = "flex";
+    item.style.flexDirection = "column";
+    item.style.margin = "20px";
+    item.style.justifyContent = "center";
+});
+
+const valueEl = document.querySelectorAll(".value")
+valueEl.forEach(item => {
+    item.style.fontSize = "40px";
+    
+})
+const labelEl = document.querySelectorAll(".label");
+labelEl.forEach(item => {
+    item.style.fontSize = "15px";
+})
