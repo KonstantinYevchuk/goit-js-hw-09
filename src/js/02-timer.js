@@ -13,6 +13,7 @@ const minutesEl = document.querySelector(".value[data-minutes]");
 const hoursEl = document.querySelector(".value[data-hours]");
 const daysEl = document.querySelector(".value[data-days]");
 
+let finalTime = null;
 buttonEl.setAttribute("disabled", true);
 
 const options = {
@@ -21,31 +22,39 @@ const options = {
     defaultDate: new Date(),
     minuteIncrement: 1,
     onClose(selectedDates) {
-        if(selectedDates[0] < Date.now()) {
-            // alert("Please choose a date in the future");
-            Notiflix.Notify.failure('Please choose a date in the future');
-            return
-        } 
-        buttonEl.removeAttribute("disabled")
-        buttonEl.addEventListener("click", onClick);
-    
-        function onClick() { 
-        setInterval(() => {
-            const timeLeft = convertMs(selectedDates[0] - new Date());
-            console.log(`${timeLeft.days}:${timeLeft.hours}:${timeLeft.minutes}:${timeLeft.seconds}`);
-            daysEl.textContent = addLeadingZero(timeLeft.days);
-            hoursEl.textContent = addLeadingZero(timeLeft.hours);
-            minutesEl.textContent = addLeadingZero(timeLeft.minutes);
-            secondEl.textContent = addLeadingZero(timeLeft.seconds);
-        }, 1000)  
-            buttonEl.setAttribute("disabled", "true");
-            inputEl.setAttribute("disabled", "true")  
-           
-    }
+        finalTime = new Date(selectedDates[0].getTime());
+        
+        finalTimeCheck(finalTime, new Date())
+        
     },
   };
 
 flatpickr(inputEl, options);
+
+buttonEl.removeAttribute("disabled")
+buttonEl.addEventListener("click", onClick);
+    
+function onClick() { 
+    const timerId = setInterval(() => {
+            const timeLeft = convertMs(finalTime - new Date());
+            console.log(`${timeLeft.days}:${timeLeft.hours}:${timeLeft.minutes}:${timeLeft.seconds}`);
+            timerCounter(timeLeft)
+
+            zeroTime(timeLeft, timerId)
+        }, 1000)  
+            buttonEl.setAttribute("disabled", "true");
+            inputEl.setAttribute("disabled", "true")  
+
+            
+           
+    }
+
+    function timerCounter({days, hours, minutes, seconds}) {
+            daysEl.textContent = addLeadingZero(days);
+            hoursEl.textContent = addLeadingZero(hours);
+            minutesEl.textContent = addLeadingZero(minutes);
+            secondEl.textContent = addLeadingZero(seconds);
+    }
 
 function convertMs(ms) {
     
@@ -54,39 +63,53 @@ function convertMs(ms) {
     const hour = minute * 60;
     const day = hour * 24;
     
-    const days = addLeadingZero(Math.floor(ms / day));
-    const hours = addLeadingZero(Math.floor((ms % day) / hour));
-    const minutes = addLeadingZero(Math.floor(((ms % day) % hour) / minute));
-    const seconds = addLeadingZero(Math.floor((((ms % day) % hour) % minute) / second));
+    const days = Math.floor(ms / day);
+    const hours = Math.floor((ms % day) / hour);
+    const minutes = Math.floor(((ms % day) % hour) / minute);
+    const seconds = Math.floor((((ms % day) % hour) % minute) / second);
   
     return { days, hours, minutes, seconds }; 
+  }
+
+  function finalTimeCheck(final, current) {
+    if(final <= new Date()) {
+        Notiflix.Notify.failure('Please choose a date in the future');
+        buttonEl.setAttribute("disabled", true);
+    } else {
+        buttonEl.removeAttribute("disabled")
+    }
   }
 
   function addLeadingZero(value) {
     return String(value).padStart(2, '0');
   }
 
+  function zeroTime(time, interval) {
+    if(Object.values(time).every(item => item === 0)) {
+        clearInterval(interval)
+    }
+  }
 
-const bodyEl = document.querySelector("body");
-bodyEl.style.fontFamily = "sans-serif";
+// const bodyEl = document.querySelector("body");
+// bodyEl.style.fontFamily = "sans-serif";
 
-const timerEl = document.querySelector(".timer");
-timerEl.style.display = "flex";
+// const timerEl = document.querySelector(".timer");
+// timerEl.style.display = "flex";
 
-const fieldEl = document.querySelectorAll(".field");
-fieldEl.forEach(item => {
-    item.style.display = "flex";
-    item.style.flexDirection = "column";
-    item.style.margin = "20px";
-    item.style.justifyContent = "center";
-});
+// const fieldEl = document.querySelectorAll(".field");
+// fieldEl.forEach(item => {
+//     item.style.display = "flex";
+//     item.style.flexDirection = "column";
+//     item.style.margin = "20px";
+//     item.style.justifyContent = "center";
+// });
 
-const valueEl = document.querySelectorAll(".value")
-valueEl.forEach(item => {
-    item.style.fontSize = "40px";
+// const valueEl = document.querySelectorAll(".value")
+// valueEl.forEach(item => {
+//     item.style.fontSize = "40px";
     
-})
-const labelEl = document.querySelectorAll(".label");
-labelEl.forEach(item => {
-    item.style.fontSize = "15px";
-})
+// })
+// const labelEl = document.querySelectorAll(".label");
+// labelEl.forEach(item => {
+//     item.style.fontSize = "15px";
+// })
