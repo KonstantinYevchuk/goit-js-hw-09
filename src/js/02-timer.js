@@ -30,7 +30,7 @@ onClose(selectedDates) {
     buttonEl.addEventListener("click", onClick);
 
     function onClick() { 
-     setInterval(() => {
+    setInterval(() => {
         const timeLeft = convertMs(selectedDates[0] - new Date());
         console.log(`${timeLeft.days}:${timeLeft.hours}:${timeLeft.minutes}:${timeLeft.seconds}`);
         daysEl.textContent = addLeadingZero(timeLeft.days);
@@ -39,7 +39,8 @@ onClose(selectedDates) {
         secondEl.textContent = addLeadingZero(timeLeft.seconds);
     }, 1000)  
         buttonEl.setAttribute("disabled", "true");
-        inputEl.setAttribute("disabled", "true")    
+        inputEl.setAttribute("disabled", "true")  
+       
 }
 }
 });
