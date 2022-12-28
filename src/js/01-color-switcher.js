@@ -10,8 +10,8 @@ buttonStop.style.padding = "15px 30px";
 buttonStop.style.fontSize = "20px";
 buttonStop.style.backgroundColor = "white";
 
-// buttonStop.setAttribute("disabled", "true");
-setButton(set, buttonStop)
+buttonStop.setAttribute("disabled", "true");
+// setButton(buttonStop, buttonStart)
 let timerId = null;
 
 buttonStart.addEventListener("click", handleClickStart);
@@ -23,8 +23,7 @@ function handleClickStart() {
         timerId = setInterval(() => {
             bodyEl.style.backgroundColor = getRandomHexColor()
         }, 1000);
-        setButton(buttonStart, remove);
-        setButton(set, buttonStop);
+        setButton(buttonStart, buttonStop);
          
     } else {
         clearInterval(timerId)
@@ -32,8 +31,8 @@ function handleClickStart() {
 }
 
 function handleClickStop() {
-    setButton(buttonStart, remove);
-    setButton(set, buttonStop);
+    setButton(buttonStart, buttonStop);
+    setButton(buttonStop, buttonStart)
     clearInterval(timerId);
 
 }
