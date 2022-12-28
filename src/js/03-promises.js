@@ -25,13 +25,15 @@ formEl.addEventListener("submit", onSubmit);
 
 function onSubmit(evt) {
   evt.preventDefault()
-  
-  const firstDelay = Number(inputDelay.value);
-  const step = Number(inputStep.value);
-  const amount = Number(inputAmount.value);
+  const {
+    elements: {delay, step, amount}  
+  } = evt.currentTarget;
+  const firstDelay = Number(delay.value);
+  const stepEl = Number(step.value);
+  const amountEl = Number(amount.value);
     
-    for (let i = 1; i <= amount; i += 1){
-      const delayStep = firstDelay + step * (i - 1);
+    for (let i = 1; i <= amountEl; i += 1){
+      const delayStep = firstDelay + stepEl * (i - 1);
       createPromise(i, delayStep).then(onSuccess).catch(onError)
     };
 }
