@@ -2,9 +2,9 @@ import Notiflix from 'notiflix';
 
 const formEl = document.querySelector(".form")
 
-const inputDelay = document.querySelector("input[name='delay']");
-const inputStep = document.querySelector("input[name='step']");
-const inputAmount = document.querySelector("input[name='amount']");
+// const inputDelay = document.querySelector("input[name='delay']");
+// const inputStep = document.querySelector("input[name='step']");
+// const inputAmount = document.querySelector("input[name='amount']");
 
 
 function createPromise(position, delay) {
